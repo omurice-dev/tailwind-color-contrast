@@ -19,6 +19,10 @@ const ColorSelector = ({
   const colorList = generateColorList()
   const shadeList = generateShadeList(colorList[0])
 
+  const prefersDarkMode =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+
   const handleColorChange = (newColor: ColorKey) => {
     if (newColor === "black" || newColor === "white") {
       setTwClass({ color: newColor, shade: "" })
@@ -38,7 +42,7 @@ const ColorSelector = ({
   return (
     <>
       <div className="border-2 p-3 rounded-md">
-        <h2 className="font-semibold">
+        <h2 className="font-semibold dark:text-white">
           {isBackground ? "Background" : "Foreground Text"} Color
         </h2>
         <section className="">
@@ -63,9 +67,10 @@ const ColorSelector = ({
                         })
                       }
                     : {
-                        color: colors[color]?.["600"],
+                        color: colors[color]?.[prefersDarkMode ? "100" : "600"],
                         border: `2px solid ${colors[color]?.["600"]}`,
                         ...(selectedColor === color && {
+                          color: colors[color]?.["600"],
                           backgroundColor: colors[color]?.["50"],
                           textDecorationLine: "underline"
                         })
@@ -80,12 +85,12 @@ const ColorSelector = ({
           {/* shade list */}
           <div className="flex flex-nowrap overflow-scroll md:flex-wrap">
             {shadeList.map((shade) => (
-              <div className={clsx("flex items-center")}>
+              <div className={clsx("flex items-center", "ignore-dark")}>
                 <button
                   key={shade}
                   className={clsx(
                     "p-1 m-1",
-                    !selectedShade && "text-transparent",
+                    !selectedShade ? "text-transparent" : "dark:text-white",
                     selectedShade === shade &&
                       "ring-2 ring-offset-2 ring-blue-500"
                   )}
@@ -97,9 +102,9 @@ const ColorSelector = ({
                     style={
                       isBackground
                         ? {
-                            backgroundColor: (
-                              colors[selectedColor] as ColorShades
-                            )[shade],
+                            backgroundColor: prefersDarkMode
+                              ? (colors[selectedColor] as ColorShades)[shade]
+                              : (colors[selectedColor] as ColorShades)[shade],
                             color: "transparent"
                           }
                         : {
@@ -125,7 +130,8 @@ const ColorSelector = ({
               ? { backgroundColor: "black", color: "white" }
               : {
                   color: "black",
-                  border: "2px solid black"
+                  border: "2px solid black",
+                  backgroundColor: prefersDarkMode ? "white" : ""
                 }
           }
           onClick={() => handleColorChange("black")}
