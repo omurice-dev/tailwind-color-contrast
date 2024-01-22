@@ -3,7 +3,7 @@ import Footer from "./components/Footer"
 
 function App() {
   return (
-    <>
+    <div className="flex flex-col justify-between min-h-screen">
       <main className="mx-auto max-w-5xl p-4 pt-10 pb-20 flex flex-col items-center gap-y-2">
         <h1 className="text-3xl font-semibold dark:text-white">
           Tailwind Color Contrast Checker
@@ -14,7 +14,7 @@ function App() {
         <ColorCheck />
       </main>
       <Footer />
-    </>
+    </div>
   )
 }
 

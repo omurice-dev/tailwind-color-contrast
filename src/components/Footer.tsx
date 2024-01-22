@@ -6,8 +6,8 @@ const Footer = () => {
     "hover:text-blue-600 dark:hover:text-blue-100 dark:hover:underline"
   return (
     <>
-      <footer className="dark:text-white mx-auto  pb-4 px-5">
-        <ul className="pt-10 pb-16 px-10 border-t border-slate-200 flex flex-col lg:flex-row flex-wrap gap-y-2 items-center lg:justify-between text-slate-500 dark:border-slate-200/5">
+      <footer className="dark:text-white pb-4 px-5">
+        <ul className="pt-10 pb-16 px-10 border-t border-slate-200 flex flex-col lg:flex-row flex-wrap gap-y-2 items-center lg:justify-around text-slate-500 dark:border-slate-200/5">
           <li className={clsx(linkStyle, "w-full")}>
             <a
               href="https://github.com/wenxpan/tailwind-color-contrast"
@@ -31,7 +31,7 @@ const Footer = () => {
               href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum"
               target="_blank"
             >
-              WCAG - Contrast (Minimum) (Level AA)
+              WCAG - Contrast (Level AA)
             </a>
           </li>
           <li className={linkStyle}>
@@ -39,7 +39,7 @@ const Footer = () => {
               href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced"
               target="_blank"
             >
-              WCAG - Contrast (Enhanced) (Level AAA)
+              WCAG - Contrast (Level AAA)
             </a>
           </li>
         </ul>
