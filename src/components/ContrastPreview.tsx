@@ -10,10 +10,9 @@ const ContrastPreview = ({
       <section
         style={{ backgroundColor: bgColorHex, color: fgColorHex }}
         className="border-2 p-4 rounded-md transition-colors order-last md:order-none"
+        aria-hidden="true"
       >
-        <h1 role="presentation" className="text-[24px] font-bold">
-          Preview
-        </h1>
+        <h2 className="text-[24px] font-bold">Preview</h2>
         <p>
           Text: <span className="uppercase">{fgColorHex}</span>
         </p>
