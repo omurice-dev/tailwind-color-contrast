@@ -24,23 +24,23 @@ export const ColorInput = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white rounded-md p-4 md:flex-nowrap place-items-center">
-        <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white rounded-md p-4 md:flex-nowrap">
+        <section>
           <h2 className="font-semibold">Foreground Text Color</h2>
           <ColorSelector
             isBackground={false}
             twClass={fgTwClass}
             setTwClass={setFgTwClass}
           />
-        </div>
-        <div>
+        </section>
+        <section>
           <h2 className="font-semibold">Background Color</h2>
           <ColorSelector
             isBackground={true}
             twClass={bgTwClass}
             setTwClass={setBgTwClass}
           />
-        </div>
+        </section>
         <ContrastPreview bgColorHex={bgColorHex} fgColorHex={fgColorHex} />
         <ContrastResult
           bgColorHex={bgColorHex}

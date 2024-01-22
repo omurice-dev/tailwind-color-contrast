@@ -34,7 +34,7 @@ const ContrastResult = ({
   return (
     <section
       className={clsx(
-        "border-2 p-3 rounded-md place-self-start",
+        "border-2 p-3 rounded-md flex flex-col items-center justify-center",
         contrastScore && contrastScore === "Fail"
           ? "border-red-500"
           : "border-green-500"
@@ -47,7 +47,7 @@ const ContrastResult = ({
       <h3 className="font-semibold">WCAG Level AA</h3>
       <p>Large text - 3:1 {checkPassFail(contrastRatio, 3)}</p>
       <p>Normal text - 4.5:1 {checkPassFail(contrastRatio, 4.5)}</p>
-      <h3 className="font-semibold">WCAG Level AAA</h3>
+      <h3 className="font-semibold mt-2">WCAG Level AAA</h3>
       <p>Large text - 4.5:1 {checkPassFail(contrastRatio, 4.5)}</p>
       <p>Normal text - 7:1 {checkPassFail(contrastRatio, 7)}</p>
     </section>
