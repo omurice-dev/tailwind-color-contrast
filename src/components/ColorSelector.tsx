@@ -38,28 +38,39 @@ const ColorSelector = ({
   return (
     <>
       <div className="border-2 p-3 rounded-md">
+        <h2 className="font-semibold">
+          {isBackground ? "Background" : "Foreground Text"} Color
+        </h2>
         <section className="">
           {/* color list */}
           <div className="flex flex-nowrap overflow-scroll md:flex-wrap">
             {colorList.map((color) => (
               <button
                 key={color}
-                className={`p-2 m-1 font-semibold ${
-                  selectedColor === color
-                    ? "ring-2 ring-offset-2 ring-blue-500"
-                    : ""
-                }`}
-                style={
-                  isBackground
+                className={clsx(
+                  "p-2 m-1 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-sm"
+                )}
+                style={{
+                  ...(isBackground
                     ? {
                         backgroundColor: colors[color]?.["100"],
-                        border: `2px solid ${colors[color]?.["100"]}`
+                        border: `2px solid ${colors[color]?.["100"]}`,
+                        ...(selectedColor === color && {
+                          border: `2px solid ${colors[color]?.["700"]}`,
+                          backgroundColor: colors[color]?.["700"],
+                          textDecorationLine: "underline",
+                          color: "white"
+                        })
                       }
                     : {
                         color: colors[color]?.["600"],
-                        border: `2px solid ${colors[color]?.["600"]}`
-                      }
-                }
+                        border: `2px solid ${colors[color]?.["600"]}`,
+                        ...(selectedColor === color && {
+                          backgroundColor: colors[color]?.["50"],
+                          textDecorationLine: "underline"
+                        })
+                      })
+                }}
                 onClick={() => handleColorChange(color)}
               >
                 {color}
@@ -106,8 +117,8 @@ const ColorSelector = ({
         </section>
         <button
           className={clsx(
-            "p-2 m-1 font-semibold",
-            selectedColor === "black" && "ring-2 ring-offset-2 ring-blue-500"
+            "p-2 m-1 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
+            selectedColor === "black" && "underline"
           )}
           style={
             isBackground
@@ -123,8 +134,8 @@ const ColorSelector = ({
         </button>
         <button
           className={clsx(
-            "p-2 m-1 font-semibold",
-            selectedColor === "white" && "ring-2 ring-offset-2 ring-blue-500"
+            "p-2 m-1 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
+            selectedColor === "white" && "underline"
           )}
           style={
             isBackground
