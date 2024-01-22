@@ -18,31 +18,46 @@ const ContrastResult = ({
   const contrastScore = contrastRatio ? score(contrastRatio) : null
 
   const checkPassFail = (score: number | string, standard: number) => {
-    const passMarker = (
-      <span className="bg-green-700 px-3 rounded-2xl text-white">Pass</span>
-    )
-
-    const failMarker = (
-      <span className="bg-red-700 px-3 rounded-2xl text-white">Fail</span>
-    )
     if (typeof score === "number") {
-      return score > standard ? passMarker : failMarker
+      const isMet = score > standard
+
+      return (
+        <span
+          className={clsx(
+            "px-3 rounded-2xl text-white",
+            isMet ? "bg-green-700" : "bg-red-700"
+          )}
+        >
+          {isMet ? "Pass" : "Fail"}
+        </span>
+      )
     }
     return null
   }
+
+  const contrastLevel =
+    contrastScore && contrastScore === "Fail"
+      ? "border-red-500"
+      : contrastScore === "AA Large"
+      ? "border-yellow-500"
+      : "border-green-500"
 
   return (
     <section
       className={clsx(
         "border-2 p-3 rounded-md flex flex-col items-center justify-center",
-        contrastScore && contrastScore === "Fail"
-          ? "border-red-500"
-          : "border-green-500"
+        contrastLevel
       )}
     >
-      <p>{twClassString}</p>
+      <p className="italic">{twClassString}</p>
+      <p className="italic uppercase">
+        {fgColorHex} - {bgColorHex}
+      </p>
       <h2 className="text-2xl my-2">
-        Contrast: {contrastRatio}:1 {contrastScore && `(${contrastScore})`}
+        Contrast:{" "}
+        <span className="font-semibold">
+          {contrastRatio}:1 {contrastScore && `(${contrastScore})`}
+        </span>
       </h2>
       <h3 className="font-semibold">WCAG Level AA</h3>
       <p>Large text - 3:1 {checkPassFail(contrastRatio, 3)}</p>

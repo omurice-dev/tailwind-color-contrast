@@ -25,7 +25,7 @@ const ColorSelector = ({
       return
     }
     if (!selectedShade) {
-      setTwClass({ color: newColor, shade: "500" })
+      setTwClass({ color: newColor, shade: isBackground ? "100" : "600" })
     } else {
       setTwClass({ ...twClass, color: newColor })
     }
@@ -38,7 +38,7 @@ const ColorSelector = ({
   return (
     <>
       <div className="border-2 p-3 rounded-md">
-        <section className="md:flex">
+        <section className="">
           {/* color list */}
           <div className="flex flex-nowrap overflow-scroll md:flex-wrap">
             {colorList.map((color) => (
@@ -52,13 +52,12 @@ const ColorSelector = ({
                 style={
                   isBackground
                     ? {
-                        backgroundColor: colors[color]?.["100"]
+                        backgroundColor: colors[color]?.["100"],
+                        border: `2px solid ${colors[color]?.["100"]}`
                       }
                     : {
                         color: colors[color]?.["600"],
-                        borderColor: colors[color]?.["600"],
-                        borderStyle: "solid",
-                        borderWidth: "2px"
+                        border: `2px solid ${colors[color]?.["600"]}`
                       }
                 }
                 onClick={() => handleColorChange(color)}
@@ -83,7 +82,7 @@ const ColorSelector = ({
                   disabled={!selectedShade}
                 >
                   <span
-                    className={clsx("p-1")}
+                    className="p-1"
                     style={
                       isBackground
                         ? {

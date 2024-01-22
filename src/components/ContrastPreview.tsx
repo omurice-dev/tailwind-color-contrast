@@ -5,26 +5,28 @@ const ContrastPreview = ({
   bgColorHex: string
   fgColorHex: string
 }) => {
-  const bgStyle = { backgroundColor: bgColorHex }
-  const fgStyle = { color: fgColorHex }
-
   return (
     <>
       <section
-        style={{ ...bgStyle, ...fgStyle }}
-        className="border-2 p-3 rounded-md"
+        style={{ backgroundColor: bgColorHex, color: fgColorHex }}
+        className="border-2 p-4 rounded-md transition-colors order-last md:order-none"
       >
         <h1 role="presentation" className="text-[24px] font-bold">
           Preview
         </h1>
-        <p className="uppercase">{`${fgColorHex} ${bgColorHex}`}</p>
+        <p>
+          Text: <span className="uppercase">{fgColorHex}</span>
+        </p>
+        <p>
+          Background: <span className="uppercase">{bgColorHex}</span>
+        </p>
         <p className="py-2">
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus
           harum labore neque error in tempore ex placeat autem, atque recusandae
           commodi consectetur doloremque dolorem ullam officiis quam at, sed ea.
         </p>
         <button
-          className="border-2 p-4 mr-2"
+          className="border-2 py-2 px-4 rounded-md mr-2"
           role="presentation"
           style={{ borderColor: fgColorHex }}
           disabled
@@ -32,7 +34,7 @@ const ContrastPreview = ({
           Button
         </button>
         <button
-          className="border-2 p-4"
+          className="border-2 py-2 px-4 rounded-md"
           role="presentation"
           disabled
           style={{

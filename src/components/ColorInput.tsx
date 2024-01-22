@@ -24,7 +24,7 @@ export const ColorInput = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white rounded-md p-4 md:flex-nowrap">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-white rounded-md p-4">
         <section>
           <h2 className="font-semibold">Foreground Text Color</h2>
           <ColorSelector
