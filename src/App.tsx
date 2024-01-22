@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="flex flex-col justify-between min-h-screen">
       <main className="mx-auto max-w-5xl p-4 pt-10 pb-20 flex flex-col items-center gap-y-2">
-        <h1 className="text-3xl font-semibold dark:text-white">
+        <h1 className="text-4xl font-semibold dark:text-white">
           Tailwind Color Contrast Checker
         </h1>
         <p className="p-4 dark:text-white">
