@@ -30,20 +30,25 @@ spec:
     }
   }
   stages {
-    stage('Build and Publish to build id') {
+    stage('Build and publish image to dev latest') {
+      when {
+        not {
+          branch 'main'
+        }
+      }
       steps {
         container('builder') {
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BUILD_ID}"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:dev-latest"
         }
       }
     }
-    stage('Tag image to latest') {
+    stage('Build and publish image to prod latest') {
       when {
         branch 'main'
       }
       steps {
         container('builder') {
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=ghcr.io/omurice-dev/tailwind-a11y:latest"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:latest"
         }
       }
     }
