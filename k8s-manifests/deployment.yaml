@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tailwind-a11y
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tailwind-a11y
+  template:
+    metadata:
+      labels:
+        app: tailwind-a11y
+    spec:
+      containers:
+        - name: tailwind-a11y
+          image: ghcr.io/omurice-dev/tailwind-a11y:latest
+          ports:
+            - name: httpport
+              containerPort: 80
+
