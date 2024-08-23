@@ -4,7 +4,7 @@ pipeline {
       yaml """
 kind: Pod
 metadata:
-  name: kaniko
+  name: tailwind-color-contrast-agent
 spec:
   containers:
   - name: builder
