@@ -1,31 +1,31 @@
-import { useState } from "react"
-import { getColorHex } from "../utils/colorHelper"
-import { twColorClass } from "../types/colorTypes"
-import ColorSelector from "./ColorSelector"
-import ContrastPreview from "./ContrastPreview"
-import ContrastResult from "./ContrastResult"
+import { useState } from "react";
+import { getColorHex } from "../utils/colorHelper";
+import { twColorClass } from "../types/colorTypes";
+import ColorSelector from "./ColorSelector";
+import ContrastPreview from "./ContrastPreview";
+import ContrastResult from "./ContrastResult";
 
 export const ColorCheck = () => {
   const [bgTwClass, setBgTwClass] = useState<twColorClass>({
     color: "white",
-    shade: ""
-  })
+    shade: "",
+  });
   const [fgTwClass, setFgTwClass] = useState<twColorClass>({
     color: "black",
-    shade: ""
-  })
+    shade: "",
+  });
 
-  const bgColorHex = getColorHex(bgTwClass)
-  const fgColorHex = getColorHex(fgTwClass)
+  const bgColorHex = getColorHex(bgTwClass);
+  const fgColorHex = getColorHex(fgTwClass);
 
   const twClassString = `text-${fgTwClass.color}${fgTwClass.shade && "-"}${
     fgTwClass.shade
-  } bg-${bgTwClass.color}${bgTwClass.shade && "-"}${bgTwClass.shade}`
+  } bg-${bgTwClass.color}${bgTwClass.shade && "-"}${bgTwClass.shade}`;
 
   const handleColorSwap = () => {
-    setBgTwClass({ color: fgTwClass.color, shade: fgTwClass.shade })
-    setFgTwClass({ color: bgTwClass.color, shade: bgTwClass.shade })
-  }
+    setBgTwClass({ color: fgTwClass.color, shade: fgTwClass.shade });
+    setFgTwClass({ color: bgTwClass.color, shade: bgTwClass.shade });
+  };
 
   return (
     <>
@@ -54,7 +54,7 @@ export const ColorCheck = () => {
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ColorCheck
+export default ColorCheck;

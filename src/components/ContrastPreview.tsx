@@ -1,9 +1,9 @@
 const ContrastPreview = ({
   bgColorHex,
-  fgColorHex
+  fgColorHex,
 }: {
-  bgColorHex: string
-  fgColorHex: string
+  bgColorHex: string;
+  fgColorHex: string;
 }) => {
   return (
     <>
@@ -39,14 +39,14 @@ const ContrastPreview = ({
           style={{
             borderColor: fgColorHex,
             backgroundColor: fgColorHex,
-            color: bgColorHex
+            color: bgColorHex,
           }}
         >
           Button
         </button>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default ContrastPreview
+export default ContrastPreview;

@@ -1,9 +1,9 @@
-import clsx from "clsx"
-import { Icon } from "@iconify/react"
+import clsx from "clsx";
+import { Icon } from "@iconify/react";
 
 const Footer = () => {
   const linkStyle =
-    "hover:text-blue-600 dark:hover:text-blue-100 dark:hover:underline"
+    "hover:text-blue-600 dark:hover:text-blue-100 dark:hover:underline";
   return (
     <>
       <footer className="dark:text-white pb-4 px-5">
@@ -45,7 +45,7 @@ const Footer = () => {
         </ul>
       </footer>
     </>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

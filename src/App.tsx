@@ -1,5 +1,5 @@
-import ColorCheck from "./components/ColorCheck"
-import Footer from "./components/Footer"
+import ColorCheck from "./components/ColorCheck";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
