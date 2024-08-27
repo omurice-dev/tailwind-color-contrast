@@ -1,43 +1,43 @@
-import colors from "tailwindcss/colors"
-import clsx from "clsx"
-import { generateColorList, generateShadeList } from "../utils/colorHelper"
-import { twColorClass, ColorShades, ColorKey } from "../types/colorTypes"
+import colors from "tailwindcss/colors";
+import clsx from "clsx";
+import { generateColorList, generateShadeList } from "../utils/colorHelper";
+import { twColorClass, ColorShades, ColorKey } from "../types/colorTypes";
 
 interface ColorSelectorProps {
-  isBackground: boolean
-  twClass: twColorClass
-  setTwClass: (twClass: twColorClass) => void
+  isBackground: boolean;
+  twClass: twColorClass;
+  setTwClass: (twClass: twColorClass) => void;
 }
 
 const ColorSelector = ({
   isBackground = true,
   twClass,
-  setTwClass
+  setTwClass,
 }: ColorSelectorProps) => {
-  const { color: selectedColor, shade: selectedShade } = twClass
+  const { color: selectedColor, shade: selectedShade } = twClass;
 
-  const colorList = generateColorList()
-  const shadeList = generateShadeList(colorList[0])
+  const colorList = generateColorList();
+  const shadeList = generateShadeList(colorList[0]);
 
   const prefersDarkMode =
     window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
 
   const handleColorChange = (newColor: ColorKey) => {
     if (newColor === "black" || newColor === "white") {
-      setTwClass({ color: newColor, shade: "" })
-      return
+      setTwClass({ color: newColor, shade: "" });
+      return;
     }
     if (!selectedShade) {
-      setTwClass({ color: newColor, shade: isBackground ? "100" : "600" })
+      setTwClass({ color: newColor, shade: isBackground ? "100" : "600" });
     } else {
-      setTwClass({ ...twClass, color: newColor })
+      setTwClass({ ...twClass, color: newColor });
     }
-  }
+  };
 
   const handleShadeChange = (shade: string) => {
-    setTwClass({ ...twClass, shade })
-  }
+    setTwClass({ ...twClass, shade });
+  };
 
   return (
     <>
@@ -53,7 +53,7 @@ const ColorSelector = ({
               <button
                 key={color}
                 className={clsx(
-                  "p-2 m-1 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-sm"
+                  "p-2 m-1 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-sm",
                 )}
                 style={{
                   ...(isBackground
@@ -64,8 +64,8 @@ const ColorSelector = ({
                           border: `2px solid ${colors[color]?.["700"]}`,
                           backgroundColor: colors[color]?.["700"],
                           textDecorationLine: "underline",
-                          color: "white"
-                        })
+                          color: "white",
+                        }),
                       }
                     : {
                         color: colors[color]?.[prefersDarkMode ? "100" : "600"],
@@ -73,9 +73,9 @@ const ColorSelector = ({
                         ...(selectedColor === color && {
                           color: colors[color]?.["600"],
                           backgroundColor: colors[color]?.["50"],
-                          textDecorationLine: "underline"
-                        })
-                      })
+                          textDecorationLine: "underline",
+                        }),
+                      }),
                 }}
                 onClick={() => handleColorChange(color)}
               >
@@ -96,7 +96,7 @@ const ColorSelector = ({
                     "p-1 m-1 flex flex-col items-center",
                     !selectedShade ? "text-transparent" : "dark:text-white",
                     selectedShade === shade &&
-                      "ring-2 ring-offset-2 ring-blue-500"
+                      "ring-2 ring-offset-2 ring-blue-500",
                   )}
                   onClick={() => handleShadeChange(shade)}
                   disabled={!selectedShade}
@@ -109,10 +109,12 @@ const ColorSelector = ({
                             backgroundColor: prefersDarkMode
                               ? (colors[selectedColor] as ColorShades)[shade]
                               : (colors[selectedColor] as ColorShades)[shade],
-                            color: "transparent"
+                            color: "transparent",
                           }
                         : {
-                            color: (colors[selectedColor] as ColorShades)[shade]
+                            color: (colors[selectedColor] as ColorShades)[
+                              shade
+                            ],
                           }
                     }
                   >
@@ -127,7 +129,7 @@ const ColorSelector = ({
         <button
           className={clsx(
             "p-2 m-1 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
-            selectedColor === "black" && "underline"
+            selectedColor === "black" && "underline",
           )}
           style={
             isBackground
@@ -135,7 +137,7 @@ const ColorSelector = ({
               : {
                   color: "black",
                   border: "2px solid black",
-                  backgroundColor: prefersDarkMode ? "white" : ""
+                  backgroundColor: prefersDarkMode ? "white" : "",
                 }
           }
           onClick={() => handleColorChange("black")}
@@ -145,7 +147,7 @@ const ColorSelector = ({
         <button
           className={clsx(
             "p-2 m-1 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
-            selectedColor === "white" && "underline"
+            selectedColor === "white" && "underline",
           )}
           style={
             isBackground
@@ -153,7 +155,7 @@ const ColorSelector = ({
               : {
                   color: "white",
                   backgroundColor: "black",
-                  border: "2px solid black"
+                  border: "2px solid black",
                 }
           }
           onClick={() => handleColorChange("white")}
@@ -162,7 +164,7 @@ const ColorSelector = ({
         </button>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ColorSelector
+export default ColorSelector;
