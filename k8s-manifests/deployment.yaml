@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: tailwind-a11y
-          image: ghcr.io/omurice-dev/tailwind-a11y:latest
+          image: ghcr.io/omurice-dev/tailwind-a11y:main-2
           ports:
             - name: httpport
               containerPort: 80
