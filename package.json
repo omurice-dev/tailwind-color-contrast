@@ -2,7 +2,7 @@
   "name": "tailwind-color-contrast",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://tailwind-a11y.wenxpan.com/",
+  "homepage": "https://tailwind-a11y.omurice.dev/",
   "type": "module",
   "scripts": {
     "dev": "vite",
