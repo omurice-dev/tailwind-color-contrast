@@ -7,6 +7,12 @@ metadata:
   name: tailwind-color-contrast-agent
 spec:
   containers:
+  - name: ci
+    image: node:20.9-alpine
+    command:
+    - sleep
+    args:
+    - 9999999
   - name: builder
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: Always
@@ -30,6 +36,23 @@ spec:
     }
   }
   stages {
+    stage('Lint') {
+      steps {
+        container('ci') {
+          sh "npm ci && npm run lint"
+        }
+      }
+    }
+
+    stage('Format') {
+      steps {
+        container('ci') {
+          sh "npm ci && npm run format:check"
+        }
+      }
+    }
+
+
     stage('Build and publish image to dev latest') {
       when {
         not {
