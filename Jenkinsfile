@@ -36,6 +36,19 @@ spec:
     }
   }
   stages {
+    stage('Check Branch and PR Conditions') {
+      steps {
+        script {
+          def srcBranch = env.BRANCH_NAME // Source branch in the PR
+          def targetBranch = env.CHANGE_TARGET  // Target branch in the PR
+
+          // Check if it's a PR, and if the conditions are met
+          if (env.CHANGE_ID && srcBranch != 'development' && targetBranch == 'main') {
+            error("Build failed: Source branch is not 'development' and target branch is 'main'.")
+          }
+        }
+      }
+    }
     stage('Lint') {
       steps {
         container('ci') {
