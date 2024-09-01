@@ -53,11 +53,9 @@ spec:
     }
 
 
-    stage('Build and publish image to dev latest') {
+    stage('Build and deploy image to staging') {
       when {
-        not {
-          branch 'main'
-        }
+        branch 'development'
       }
       steps {
         container('builder') {
@@ -65,7 +63,7 @@ spec:
         }
       }
     }
-    stage('Build and publish image to prod latest') {
+    stage('Build and publish image to prod') {
       when {
         branch 'main'
       }
