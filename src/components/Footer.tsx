@@ -42,6 +42,9 @@ const Footer = () => {
               WCAG - Contrast (Level AAA)
             </a>
           </li>
+          <li>
+            <p>Git Commit Hash: {import.meta.env.VITE_GIT_COMMIT_HASH}</p>
+          </li>
         </ul>
       </footer>
     </>

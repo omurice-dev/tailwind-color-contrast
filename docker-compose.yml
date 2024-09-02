@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        GIT_COMMIT_HASH: ${GIT_COMMIT_HASH}
+    ports:
+      - "3000:80"

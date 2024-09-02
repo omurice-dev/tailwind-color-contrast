@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+GIT_COMMIT_HASH=$(git rev-parse --short HEAD) docker compose build
+docker compose up
