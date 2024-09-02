@@ -1,4 +1,6 @@
 FROM node:20.9.0 AS base
+ARG GIT_COMMIT_HASH
+ENV VITE_GIT_COMMIT_HASH=${GIT_COMMIT_HASH}
 WORKDIR /app/
 COPY package.json package-lock.json ./
 RUN npm ci
