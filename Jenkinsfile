@@ -65,6 +65,17 @@ spec:
       }
     }
 
+    stage('Build image - Dry run') {
+      steps {
+        script {
+          def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
+          env.GIT_COMMIT_HASH = commitHash
+        }
+        container('builder') {
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --no-push"
+        }
+      }
+    }
 
     stage('Build and deploy image to staging') {
       when {
