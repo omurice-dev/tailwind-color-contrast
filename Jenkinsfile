@@ -72,7 +72,7 @@ spec:
           env.GIT_COMMIT_HASH = commitHash
         }
         container('builder') {
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --no-push"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --no-push --cleanup"
         }
       }
     }
@@ -87,7 +87,7 @@ spec:
           env.GIT_COMMIT_HASH = commitHash
         }
         container('builder') {
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:dev-latest"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --cleanup --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:dev-latest"
         }
       }
     }
@@ -101,7 +101,7 @@ spec:
           env.GIT_COMMIT_HASH = commitHash
         }
         container('builder') {
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:latest"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --cleanup --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:latest"
         }
       }
     }
