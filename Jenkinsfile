@@ -14,7 +14,7 @@ spec:
     args:
     - 9999999
   - name: builder
-    image: gcr.io/kaniko-project/executor:debug
+    image: gcr.io/kaniko-project/executor:v1.3.0-debug
     imagePullPolicy: Always
     command:
     - sleep
