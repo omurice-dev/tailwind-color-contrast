@@ -14,7 +14,7 @@ spec:
     args:
     - 9999999
   - name: builder
-    image: gcr.io/kaniko-project/executor:debug
+    image: gcr.io/kaniko-project/executor:v1.3.0-debug
     imagePullPolicy: Always
     command:
     - sleep
@@ -23,6 +23,9 @@ spec:
     volumeMounts:
     - name: jenkins-docker-cfg
       mountPath: /kaniko/.docker
+    env:
+    - name: container
+      value: kube
   volumes:
   - name: jenkins-docker-cfg
     projected:
@@ -65,14 +68,29 @@ spec:
       }
     }
 
+    stage('Build image - Dry run') {
+      steps {
+        script {
+          def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
+          env.GIT_COMMIT_HASH = commitHash
+        }
+        container('builder') {
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --no-push --cleanup"
+        }
+      }
+    }
 
     stage('Build and deploy image to staging') {
       when {
         branch 'development'
       }
       steps {
+        script {
+          def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
+          env.GIT_COMMIT_HASH = commitHash
+        }
         container('builder') {
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:dev-latest"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --cleanup --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:dev-latest"
         }
       }
     }
@@ -81,8 +99,12 @@ spec:
         branch 'main'
       }
       steps {
+        script {
+          def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
+          env.GIT_COMMIT_HASH = commitHash
+        }
         container('builder') {
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:latest"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --build-arg GIT_COMMIT_HASH='${env.GIT_COMMIT_HASH}' --cleanup --destination=ghcr.io/omurice-dev/tailwind-a11y:${env.BRANCH_NAME}-${env.BUILD_ID} --destination=ghcr.io/omurice-dev/tailwind-a11y:latest"
         }
       }
     }
