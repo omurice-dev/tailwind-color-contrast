@@ -68,7 +68,7 @@ jobs:
                     sed -i "s|image: ghcr.io/omurice-dev/tailwind-a11y:.*|image: $IMAGE_TAG|" $DEPLOYMENT_FILE
                   else
                     DEPLOYMENT_FILE="k8s-manifests/tailwind-a11y/overlays/staging/kustomization.yaml"
-                    sed -i "s|value: ghcr.io/omurice-dev/tailwind-a11y:.*|image: $IMAGE_TAG|" $DEPLOYMENT_FILE
+                    sed -i "s|value: ghcr.io/omurice-dev/tailwind-a11y:.*|value: $IMAGE_TAG|" $DEPLOYMENT_FILE
                   fi
 
             - name: Commit and push changes to deployment.yaml
