@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - 'main'
+            - 'development'
 
 env:
     IMAGE_NAME: tailwind-a11y
@@ -38,23 +39,37 @@ jobs:
 
                   docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
                   docker push $IMAGE_ID:$VERSION
-
-                  docker tag $IMAGE_NAME $IMAGE_ID:latest
-                  docker push $IMAGE_ID:latest
-
+                
                   echo "IMAGE_TAG=$IMAGE_ID:$VERSION" >> $GITHUB_ENV
+
+                  # Push "latest" for main branch
+                  if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+                    docker tag $IMAGE_NAME $IMAGE_ID:latest
+                    docker push $IMAGE_ID:latest
+                  fi
+
+                  # Push "dev-latest" for development branch
+                  if [[ "${{ github.ref }}" == "refs/heads/development" ]]; then
+                    docker tag $IMAGE_NAME $IMAGE_ID:dev-latest
+                    docker push $IMAGE_ID:dev-latest
+                  fi
 
             - name: Checkout Kubernetes manifests repository
               uses: actions/checkout@v4
               with:
                   repository: omurice-dev/k8s-manifests
-                  ssh-key: ${{ secrets.DEPLOY_KEY }} # Secure access
-                  path: k8s-manifests # Checkout location
+                  ssh-key: ${{ secrets.DEPLOY_KEY }}
+                  path: k8s-manifests
 
             - name: Update deployment.yaml with new image tag
               run: |
-                  DEPLOYMENT_FILE="k8s-manifests/tailwind-a11y/base/deployment.yaml"
-                  sed -i "s|image: ghcr.io/omurice-dev/tailwind-a11y:.*|image: $IMAGE_TAG|" $DEPLOYMENT_FILE
+                  if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+                    DEPLOYMENT_FILE="k8s-manifests/tailwind-a11y/base/deployment.yaml"
+                    sed -i "s|image: ghcr.io/omurice-dev/tailwind-a11y:.*|image: $IMAGE_TAG|" $DEPLOYMENT_FILE
+                  else
+                    DEPLOYMENT_FILE="k8s-manifests/tailwind-a11y/overlays/staging/kustomization.yaml"
+                    sed -i "s|value: ghcr.io/omurice-dev/tailwind-a11y:.*|image: $IMAGE_TAG|" $DEPLOYMENT_FILE
+                  fi
 
             - name: Commit and push changes to deployment.yaml
               run: |
@@ -62,6 +77,6 @@ jobs:
                   git config --global user.name "github-actions[bot]"
                   git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-                  git add tailwind-a11y/base/deployment.yaml
+                  git add .
                   git commit -m "Update image to new version: ${IMAGE_TAG}" || echo "No changes to commit"
-                  git push origin main
+                  git push origin main || git push origin development
