@@ -1,0 +1,67 @@
+name: Publish Docker Image to GHCR and Update Deployment
+
+on:
+    push:
+        branches:
+            - 'main'
+
+env:
+    IMAGE_NAME: tailwind-a11y
+
+jobs:
+    Release Image:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Generate Unique Tag (Git SHA)
+              run: |
+                  VERSION=$(git rev-parse --short HEAD)  # Short commit SHA
+                  echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+            - name: Build image
+              run: |
+                  docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+
+            - name: Log in to registry
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            - name: Tag and Push Image
+              run: |
+                  IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+                  IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+                  docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+                  docker push $IMAGE_ID:$VERSION
+
+                  docker tag $IMAGE_NAME $IMAGE_ID:latest
+                  docker push $IMAGE_ID:latest
+
+                  echo "IMAGE_TAG=$IMAGE_ID:$VERSION" >> $GITHUB_ENV
+
+            - name: Checkout Kubernetes manifests repository
+              uses: actions/checkout@v4
+              with:
+                  repository: omurice-dev/k8s-manifests
+                  ssh-key: ${{ secrets.DEPLOY_KEY }} # Secure access
+                  path: k8s-manifests # Checkout location
+
+            - name: Update deployment.yaml with new image tag
+              run: |
+                  DEPLOYMENT_FILE="k8s-manifests/tailwind-a11y/base/deployment.yaml"
+                  sed -i "s|image: ghcr.io/omurice-dev/tailwind-a11y:.*|image: $IMAGE_TAG|" $DEPLOYMENT_FILE
+
+            - name: Commit and push changes to deployment.yaml
+              run: |
+                  cd k8s-manifests
+                  git config --global user.name "github-actions[bot]"
+                  git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+                  git add tailwind-a11y/base/deployment.yaml
+                  git commit -m "Update image to new version: ${IMAGE_TAG}" || echo "No changes to commit"
+                  git push origin main
